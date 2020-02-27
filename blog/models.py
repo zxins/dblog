@@ -50,7 +50,7 @@ class Post(models.Model):
     body = models.TextField('正文')
 
     # 创建时间&最后修改时间
-    created_time = models.DateTimeField('创建时间', default=timezone.now())
+    created_time = models.DateTimeField('创建时间', default=timezone.now)
     modified_time = models.DateTimeField('修改时间')
 
     # 文章摘要 可以没有摘要, 因此默认blank=True
