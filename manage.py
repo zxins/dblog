@@ -6,7 +6,7 @@ import sys
 
 def main():
     # os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dblog.settings')
-    os.environ.setdefault('dblog.settings.local', 'dblog.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dblog.settings.local')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
