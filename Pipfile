@@ -11,6 +11,7 @@ django = "==2.2.10"
 markdown = "*"
 gunicorn = "*"
 faker = "*"
+django-pure-pagination = "*"
 
 [requires]
 python_version = "3.7"
