@@ -1,0 +1,135 @@
+### 安装并启动
+``` shell
+$ yum install gcc
+$ yum install openssl
+$ yum install openssl-devel
+$ yum install libevent-devel
+$ wget https://www.torproject.org/dist/tor-0.2.9.10.tar.gz
+$ tar -zxvf tor-0.2.9.10.tar.gz
+$ cd tor-0.2.9.10
+$ ./configure
+$ make
+$ ./src/or/tor &
+```
+服务器启动 按回车后台运行
+
+### 查看IP更换情况
+
+##### 1.依赖库
+``` shell
+$ sudo yum install python-devel
+$ pip install requesocks
+<!--# 此处应保持requests库为较高版本-->
+$ pip install 'requests[socks]'
+$ pip install --upgrade setuptools
+$ pip install bs4
+$ pip install PySocks
+$ pip install requests[security]
+$ pip install pyOpenSSL
+```
+##### 2.安装nc指令
+nc/ncat所做的就是在两台电脑之间建立链接并返回两个数据流，在这之后所能做的事就看你的想像力了。你能建立一个服务器，传输文件，与朋友聊天，传输流媒体或者用它作为其它协议的独立客户端。
+``` shell
+$ yum install nmap-ncat.x86_64
+```
+##### 3.生成tor密码(可跳过)
+``` shell
+$ cd
+$ tor-0.2.9.10/src/or/tor --hash-password "这里更换成你的密码"
+$ vim ./tor-0.2.0.10/src/config/torrc.sample
+替换 HashedControlPassword 16:上一步生成的字符串
+保存退出
+$ ./tor-0.2.9.10/src/or/tor -f ./tor-0.2.9.10/src/config/torrc.sample
+```
+##### 4.执行如下代码测试
+``` python
+# -*- coding: utf-8 -*-
+import time
+import requests
+from bs4 import BeautifulSoup
+import os
+
+def get_soup(url):
+    try:
+        proxies = {
+            "http": "socks5://{ip}".format(ip='127.0.0.1:9050'),
+            "https": "socks5://{ip}".format(ip='127.0.0.1:9050'),
+        }
+        response = requests.get(url, proxies=proxies)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        print soup
+        return soup
+    except Exception as e:
+        raise e
+
+url = 'https://api.ipify.org?format=json'
+
+def main():
+    while 1:
+        time.sleep(10)
+        print "current tor IP..."
+        get_soup(url)
+        # os.system("""(echo authenticate '"这里更换成你的tor密码"'; echo signal newnym; echo quit) | nc kongfm.com 9051""")
+
+if __name__ == "__main__":
+    main()
+```
+
+##### 5.执行结果
+```
+current tor IP...
+{"ip":"199.249.223.75"}
+...
+...
+```
+##### 6.自动更换IP & 设置能被外网访问
+``` shell
+$ vim ./tor-0.2.0.10/src/config/torrc.sample
+
+  <!--每10s更新一次IP-->
+  添加 MaxCircuitDirtiness 10
+
+  <!--设置能被外网访问-->
+  找到 SOCKSPort 192.168.0.1:9050 修改为：
+  SOCKSPort 0.0.0.0:9050
+  <!--若要把socket转成HTTP-->
+  SOCKSPort 192.168.0.1:9050 修改为：
+  SOCKSPort 127.0.0.1:9050
+
+<!--重启tor 应用配置-->
+$ ./tor-0.2.0.10/src/or/tor -f ./tor-0.2.0.10/src/config/torrc.sample
+```
+##### 7.socket转HTTP
+安装privoxy:
+``` shell
+$ yum install privoxy
+$ vim /etc/privoxy/config
+<!--找到并修改-->
+    forward-socks5t   /               127.0.0.1:9050 .
+
+    listen-address  0.0.0.0:8118
+```
+此时外网使用代理则可设置 服务器IP:8118 如:
+``` Python
+import requests
+
+try:
+	ip = {'http':'http:35.190.140.211:8118'}
+	url = 'http://m.tool.chinaz.com/ipsel?ip='
+	r = requests.get(url, proxies=ip)
+	print r.content
+
+except Exception as e:
+	print e
+```
+
+##### 其他
+``` shell
+<!--查看进程PID-->
+$ ps -ef
+或
+$ ps -af
+
+<!--杀死进程(无条件终止)-->
+$ kill -s 9 <PID>
+```

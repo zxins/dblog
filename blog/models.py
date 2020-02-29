@@ -66,7 +66,7 @@ class Post(models.Model):
     # ManyToManyField，表明这是多对多的关联关系
     # 也可以没有标签, 所以blank=True
     category = models.ForeignKey(Category, verbose_name='分类', on_delete=models.CASCADE)
-    tag = models.ManyToManyField(Tag, verbose_name='标签', blank=True)
+    tags = models.ManyToManyField(Tag, verbose_name='标签', blank=True)
 
     # 文章作者，这里 User 是从 django.contrib.auth.models 导入的。
     # django.contrib.auth 是 django 内置的应用，专门用于处理网站用户的注册、登录等流程，User 是

@@ -12,7 +12,7 @@ class IndexView(ListView):
     model = Post
     template_name = 'blog/index.html'
     context_object_name = 'post_list'
-
+    paginate_by = 10
 
 class CategoryView(IndexView):
 
@@ -25,7 +25,7 @@ class TagView(IndexView):
 
     def get_queryset(self):
         tag = get_object_or_404(Tag, pk=self.kwargs.get('pk'))
-        return super().get_queryset().filter(tag=tag)
+        return super().get_queryset().filter(tags=tag)
 
 
 class ArchiveView(IndexView):
@@ -115,5 +115,5 @@ def category(request, pk):
 
 def tag(request, pk):
     tag = get_object_or_404(Tag, pk=pk)
-    post_list = Post.objects.filter(tag=tag)
+    post_list = Post.objects.filter(tags=tag)
     return render(request, 'blog/index.html', context={'post_list': post_list})
