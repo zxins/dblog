@@ -1,2 +1,14 @@
-## 一个Django开发的个人博客
-[预览地址](http://132.232.3.242:8001)
+运行步骤：
+1. 安装依赖
+```
+pip install -r requirements.txt
+```
+2. 数据迁移
+```
+python manage.py migrate
+```
+
+3. 运行
+```
+python manage.py runserver
+```
