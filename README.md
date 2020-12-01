@@ -1,7 +1,7 @@
 ### 预览项目，运行步骤：
 
-### 开发环境
-#### 使用Pipenv
+### 一、开发环境
+* #### 使用Pipenv
 ##### 1. 安装
 ```
 $ pip install pipenv
@@ -28,7 +28,7 @@ $ pipenv shell
 $ python manage.py migrate // 项目默认使用sqlite3
 ```
 
-#### 使用Virtualenv
+* #### 使用Virtualenv
 ##### 1. 安装
 ```
 $ pip install virtualenv
@@ -56,14 +56,14 @@ $ pip install -r requirements.txt
 $ python manage.py migrate // 项目默认使用sqlite3
 ```
 
-### 添加假数据以预览样式(可忽略，建立空内容博客)
+### 二、添加假数据以预览样式(可忽略，建立空内容博客)
 ```
 $ python ./scripts/fake.py 
 
 $ python .\scripts\fake.py // win
 ```
 
-### RunServer
+### 三、RunServer
 ```
 $ python manage.py runserver
 ```
