@@ -1,4 +1,4 @@
-运行步骤：
+### 预览项目，运行步骤：
 
 ### 开发环境
 #### 使用Pipenv
@@ -56,7 +56,7 @@ $ pip install -r requirements.txt
 $ python manage.py migrate // 项目默认使用sqlite3
 ```
 
-### 添加假数据以预览样式
+### 添加假数据以预览样式(可忽略，建立空内容博客)
 ```
 $ python ./scripts/fake.py 
 
